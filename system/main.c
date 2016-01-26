@@ -12,7 +12,7 @@ process	main(void)
     /* Another new application process */
     resume(create(app2, 65536, 20, "app2", 0));
     /* Sleeping for concurrency to end */
-    sleep(1);
+    sleep(6);
 	resume(create(shell, 8192, 50, "shell", 1, CONSOLE));
 
 	/* Wait for shell to exit and recreate it */

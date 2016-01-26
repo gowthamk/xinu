@@ -35,7 +35,7 @@ SYSTEM_CFILES =                                                                 
 	signal.c      signaln.c     sleep.c       stacktrace.c  suspend.c       \
 	unsleep.c     userret.c     wait.c        wakeup.c      write.c         \
 	xdone.c       yield.c       app1.c        app2.c        app3.c          \
-    getppid.c     mywelcomemsg.c
+    getppid.c     getpstate.c   mywelcomemsg.c
 
 SRC_CFILES   += ${SYSTEM_CFILES}
 SRC_SFILES   += ${SYSTEM_SFILES}
@@ -292,6 +292,8 @@ binaries/getpid.o:          ../system/getpid.c
 	${CC} ${CFLAGS} -o binaries/getpid.o ../system/getpid.c
 binaries/getppid.o:          ../system/getppid.c
 	${CC} ${CFLAGS} -o binaries/getppid.o ../system/getppid.c
+binaries/getpstate.o:          ../system/getpstate.c
+	${CC} ${CFLAGS} -o binaries/getpstate.o ../system/getpstate.c
 binaries/getprio.o:         ../system/getprio.c
 	${CC} ${CFLAGS} -o binaries/getprio.o ../system/getprio.c
 binaries/getstk.o:          ../system/getstk.c

@@ -137,6 +137,9 @@ extern	pid32	getpid(void);
 /* in file getppid.c */
 extern	pid32	getppid(void);
 
+/* in file getpstate.c */
+extern	uint16   getpstate(void);
+
 /* in file getprio.c */
 extern	syscall	getprio(pid32);
 

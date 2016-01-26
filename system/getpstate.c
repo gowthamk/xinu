@@ -1,20 +1,20 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  getppid  -  Return the ID of the currently process's parent
+ *  getpstate  -  Return the state of the currently executing process.
  *------------------------------------------------------------------------
  */
 
-pid32 getppid() {
-    pid32 parent_pid;
+uint16 getpstate() {
+    uint16 pstate;
     intmask mask;
     /* Disable interrupts */
     mask = disable();
 
     struct procent my_procent = proctab[currpid];
-    parent_pid = my_procent.prparent;
+    pstate = my_procent.prstate;
 
     /* Re-enable interrupts */
     restore(mask);
-    return parent_pid; 
+    return pstate;
 }

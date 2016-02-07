@@ -203,6 +203,11 @@ mmap_search_done:
 	 * jump
 	 */
 	ljmp	$0x8, $gdt1	/* CS descriptor 1 */
+
+host2netla:
+    bswap %eax
+    ret
+
 gdt1:
 	movl	$0x10, %eax	/* DS descriptor 2 */
 	movw	%ax, %ds
@@ -217,6 +222,12 @@ gdt1:
 	 */
 	call	nulluser
 	/* call	halt */
+    /*
+    mov     $0x0000FFFF, %eax
+    call    print_eax
+    call    host2netla
+    call    print_eax
+    */
     hlt
 
 	.globl	inb

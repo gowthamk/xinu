@@ -1,8 +1,9 @@
 #include <xinu.h>
 #include <stdio.h>
+extern syscall stackdepth(void);
 
 int app1() {
-    int my_pid = getpid();
-    kprintf("app1: my pid is %d.\n",my_pid);
+    uint32 sd = stackdepth();
+    kprintf("app1: my stack depth is %d.\n",sd);
     return 0;
 }

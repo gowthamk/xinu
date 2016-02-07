@@ -16,7 +16,7 @@ SRC_SFILES =
 #------------------------------------------------------------------
 
 SYSTEM_SFILES =                                                                 \
-	clkdisp.S     ctxsw.S       intr.S        start.S     
+	clkdisp.S     ctxsw.S       intr.S        start.S     host2netla.S
 
 SYSTEM_CFILES =                                                                 \
 	ascdate.c     bufinit.c     chprio.c      clkhandler.c  clkinit.c       \
@@ -35,7 +35,9 @@ SYSTEM_CFILES =                                                                 
 	signal.c      signaln.c     sleep.c       stacktrace.c  suspend.c       \
 	unsleep.c     userret.c     wait.c        wakeup.c      write.c         \
 	xdone.c       yield.c       app1.c        app2.c        app3.c          \
-    getppid.c     getpstate.c   mywelcomemsg.c
+    getppid.c     getpstate.c   mywelcomemsg.c              host2netlb.c    \
+    host2netlc.c                prntsegaddr.c               stackdepth.c    \
+    stacktop.c    myappA.c
 
 SRC_CFILES   += ${SYSTEM_CFILES}
 SRC_SFILES   += ${SYSTEM_SFILES}
@@ -236,8 +238,18 @@ SRC_FULL    = ${SRC_CFULL} ${SRC_SFULL}
 #  Rules for files in directory ../system
 #------------------------------------------------------------------
 
+binaries/prntsegaddr.o:          ../system/prntsegaddr.c
+	${CC} ${CFLAGS} -o binaries/prntsegaddr.o ../system/prntsegaddr.c
+binaries/host2netlc.o:          ../system/host2netlc.c
+	${CC} ${CFLAGS} -o binaries/host2netlc.o ../system/host2netlc.c
+binaries/host2netlb.o:          ../system/host2netlb.c
+	${CC} ${CFLAGS} -o binaries/host2netlb.o ../system/host2netlb.c
+binaries/host2netla.o:           ../system/host2netla.S
+	${CC} ${CFLAGS} -o binaries/host2netla.o ../system/host2netla.S
 binaries/mywelcomemsg.o:          ../system/mywelcomemsg.c
 	${CC} ${CFLAGS} -o binaries/mywelcomemsg.o ../system/mywelcomemsg.c
+binaries/myappA.o:          ../system/myappA.c
+	${CC} ${CFLAGS} -o binaries/myappA.o ../system/myappA.c
 binaries/app1.o:          ../system/app1.c
 	${CC} ${CFLAGS} -o binaries/app1.o ../system/app1.c
 binaries/app2.o:          ../system/app2.c
@@ -392,6 +404,10 @@ binaries/signaln.o:         ../system/signaln.c
 	${CC} ${CFLAGS} -o binaries/signaln.o ../system/signaln.c
 binaries/sleep.o:           ../system/sleep.c
 	${CC} ${CFLAGS} -o binaries/sleep.o ../system/sleep.c
+binaries/stacktop.o:      ../system/stacktop.c
+	${CC} ${CFLAGS} -o binaries/stacktop.o ../system/stacktop.c
+binaries/stackdepth.o:      ../system/stackdepth.c
+	${CC} ${CFLAGS} -o binaries/stackdepth.o ../system/stackdepth.c
 binaries/stacktrace.o:      ../system/stacktrace.c
 	${CC} ${CFLAGS} -o binaries/stacktrace.o ../system/stacktrace.c
 binaries/suspend.o:         ../system/suspend.c

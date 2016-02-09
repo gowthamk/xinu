@@ -8,12 +8,10 @@
  */
 syscall stackdepth() {
     int pid = getpid();
-    unsigned long *topsp, *topbp; 
+    unsigned long *topbp; 
 	struct procent	*proc = &proctab[pid];
 	unsigned long	*sp, *fp;
     int count = 0;
-    asm ("movl %%esp, %0"
-          :"=r"(topsp)); 
     asm ("movl %%ebp, %0"
           :"=r"(topbp)); 
 		sp = topbp + 1;
@@ -24,12 +22,12 @@ syscall stackdepth() {
                     <= calle's fp (%08X)\n", *fp, fp);
 			return SYSERR;
 		}
-        kprintf("Current frame size: %d, Current EBP: 0x%08X\n", 
-                    (uint32)fp - (uint32)sp, fp);
+        kprintf("[Pid %d] Current frame size: %d, Current EBP: 0x%08X\n", 
+                    currpid, (uint32)fp - (uint32)sp, fp);
         sp = topbp+1;
         fp = (unsigned long *) *fp;
         count++;
 	}
-    kprintf("Total number of stack frames: %d\n",count);
+    kprintf("[Pid %d] Total number of stack frames: %d\n",currpid, count);
 	return count;
 }

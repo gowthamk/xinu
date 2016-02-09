@@ -2,12 +2,10 @@
 
 long host2netlc(long arg) {
     long res;
-    char *argptr = &arg + sizeof(long) -1, *resptr = &res;
+    char *argptr = ((char*)&arg) + sizeof(long) -1;
+    char *resptr = (char*)&res;
     int i;
-    for(i=0; i<=sizeof(long); i++) {
-        *(resptr) = *(argptr);
-        resptr ++;
-        argptr --;
-    }
+    for(i=0; i<sizeof(long); i++) 
+        *(resptr++) = *(argptr--);
     return res;
 }

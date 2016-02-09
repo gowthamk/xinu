@@ -2,12 +2,14 @@
 #include <stdio.h>
 
 void stacktop() {
-    int pid = getpid();
-	unsigned long *my_bp, *caller_sp;
+	unsigned long *my_bp, *my_sp;
     asm ("movl %%ebp, %0"
           :"=r"(my_bp)); 
-    caller_sp = my_bp+1;
-    kprintf("[Pid %d] Top of the stack[0x%08X] contains 0x%08X.\n",
-                    pid,caller_sp,*caller_sp);
+    asm ("movl %%esp, %0"
+          :"=r"(my_sp)); 
+    kprintf("stack top : 0x%08X (0x%08X)\n",
+                            *my_sp,my_sp);
+    kprintf("stack base : 0x%08X (0x%08X)\n",
+                            *my_bp,my_bp);
     return;
 }

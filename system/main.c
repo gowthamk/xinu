@@ -52,7 +52,7 @@ process	main(void)
     kprintf("******** STACK SMASHING ********\n");
     int victim_pid = create(myvictim, 2048, 20, "victim", 0);
     resume(victim_pid);
-    //resume(create(myhacker, 2048, 20, "hacker", 1, victim_pid));
+    resume(create(myhacker, 2048, 20, "hacker", 1, victim_pid));
 	while (TRUE) {
 		receive();
 		sleepms(200);

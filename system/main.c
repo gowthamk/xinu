@@ -10,6 +10,11 @@ extern void prntsegaddr(void);
 extern syscall stackdepth(void);
 extern int stacktop(void);
 extern int myappA(char*);
+extern void myvictim(void);
+extern void myhacker(int);
+
+int victimglobal = 0;
+unsigned long* plzhackme;
 
 process	main(void)
 {
@@ -18,7 +23,7 @@ process	main(void)
     /* Another new application process */
     //resume(create(app2, 65536, 20, "app2", 0));
     /* Sleeping for concurrency to end */
-    sleep(3);
+    sleep(1);
 	//resume(create(shell, 8192, 50, "shell", 1, CONSOLE));
 
 	/* Wait for shell to exit and recreate it */
@@ -40,6 +45,14 @@ process	main(void)
     kprintf(" --- Inside main. After creating myappA. ----\n");
     stacktop();
     resume(appa_pid);
+    /* Sleeping for concurrency to end */
+    sleep(1);
+
+    /* Stack Smashing */
+    kprintf("******** STACK SMASHING ********\n");
+    int victim_pid = create(myvictim, 2048, 20, "victim", 0);
+    resume(victim_pid);
+    //resume(create(myhacker, 2048, 20, "hacker", 1, victim_pid));
 	while (TRUE) {
 		receive();
 		sleepms(200);

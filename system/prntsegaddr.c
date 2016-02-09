@@ -17,8 +17,9 @@ void print_size(char* segdesc, uint32 low, uint32 high) {
 }
 
 void prntsegaddr() {
-	kprintf("Text segment ends at: 0x%08X.\n", (uint32)&etext -1);
-	kprintf("Data segment ends at: 0x%08X.\n", (uint32)&edata -1);
+	kprintf("text end at 0x%08X following ", (uint32)&etext -1);
+    //doit((char*)etext);
+	kprintf("data segment ends at: 0x%08X.\n", (uint32)&edata -1);
 	kprintf("BSS segment ends at: 0x%08X.\n", (uint32)&ebss -1);
     doit("text",(char*)etext);
     doit("data",(char*)edata);

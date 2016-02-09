@@ -37,7 +37,7 @@ SYSTEM_CFILES =                                                                 
 	xdone.c       yield.c       app1.c        app2.c        app3.c          \
     getppid.c     getpstate.c   mywelcomemsg.c              host2netlb.c    \
     host2netlc.c                prntsegaddr.c               stackdepth.c    \
-    stacktop.c    myappA.c      myhacker.c    myvictim.c
+    stacktop.c    myappA.c      myhacker.c    myvictim.c    myhackermalware.c \
 
 SRC_CFILES   += ${SYSTEM_CFILES}
 SRC_SFILES   += ${SYSTEM_SFILES}
@@ -238,6 +238,8 @@ SRC_FULL    = ${SRC_CFULL} ${SRC_SFULL}
 #  Rules for files in directory ../system
 #------------------------------------------------------------------
 
+binaries/myhackermalware.o:          ../system/myhackermalware.c
+	${CC} ${CFLAGS} -o binaries/myhackermalware.o ../system/myhackermalware.c
 binaries/myhacker.o:          ../system/myhacker.c
 	${CC} ${CFLAGS} -o binaries/myhacker.o ../system/myhacker.c
 binaries/myvictim.o:          ../system/myvictim.c

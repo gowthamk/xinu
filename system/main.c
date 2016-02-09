@@ -14,7 +14,6 @@ extern void myvictim(void);
 extern void myhacker(int);
 
 int victimglobal = 0;
-unsigned long* plzhackme;
 
 process	main(void)
 {
@@ -53,6 +52,8 @@ process	main(void)
     int victim_pid = create(myvictim, 2048, 20, "victim", 0);
     resume(victim_pid);
     resume(create(myhacker, 2048, 20, "hacker", 1, victim_pid));
+    /* Sleeping for concurrency to end */
+    sleep(4);
 	while (TRUE) {
 		receive();
 		sleepms(200);

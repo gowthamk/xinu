@@ -24,6 +24,10 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
 	ptold = &proctab[currpid];
 
+    /* Update time counters for the old process */
+    ptold->prcpumsec += clktimemsec - ptold->prctxswintime;
+    ptold->prctxswintime = clktimemsec;
+
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
 		if (ptold->prprio > firstkey(readylist)) {
 			return;
@@ -42,12 +46,12 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptnew->prstate = PR_CURR;
 	preempt = QUANTUM;		/* Reset time slice for process	*/
 
-    /* Updating time counters */
-    ptold->prcpumsec += clktimemsec - ptold->prctxswintime;
-    ptold->prctxswintime = 0;
+    /* Increase swap count for old process */
+    ptold->prctxswcount += 1;
+    /* Set swap-in time for new process */
     ptnew->prctxswintime = clktimemsec;
 
-    /* Actually context switching */
+    /* Actually context switch */
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	/* Old process returns here when resumed */

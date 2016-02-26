@@ -45,9 +45,17 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		/* Old process will no longer remain current */
 
 		ptold->prstate = PR_READY;
-        uint32 ptold_prio = (lab2flag == 4)?
-                  (prcpumsec_to_priority(ptold->prcpumsec))
-                : (ptold->prprio);
+        uint32 ptold_prio;
+        if (lab2flag == 4) {
+            if (currpid!=0) {
+                ptold_prio = prcpumsec_to_priority(ptold->prcpumsec);
+            } else {
+                //ptold_prio = min_priority;
+                ptold_prio = prcpumsec_to_priority(ptold->prcpumsec);
+            }
+        } else {
+            ptold_prio = ptold->prprio;
+        }
 		insert(currpid, readylist, ptold_prio);
 	}
 

@@ -23,9 +23,18 @@ status	ready(
 
 	prptr = &proctab[pid];
 	prptr->prstate = PR_READY;
-    int32 init_prio = /* The new process hasn't run. Its prcpumsec is zero. */
-                      (lab2flag == 4)? (prcpumsec_to_priority(0)): (prptr->prprio);
-    //kprintf("PID %d is ready\n",pid);
+    int32 init_prio;
+    if (lab2flag == 4) {
+        if (currpid!=0) {
+            /* The new process hasn't run. Its prcpumsec is zero. */
+            init_prio = prcpumsec_to_priority(0);
+        } else {
+            //init_prio = min_priority;
+            init_prio = prcpumsec_to_priority(0);
+        } 
+    } else {
+        init_prio = prptr->prprio;
+    }
 	insert(pid, readylist, init_prio);
 	resched();
 

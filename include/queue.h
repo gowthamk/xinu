@@ -34,3 +34,11 @@ extern	struct qentry	queuetab[];
 /* Inline to check queue id assumes interrupts are disabled */
 
 #define	isbadqid(x)	(((int32)(x) < 0) || (int32)(x) >= NQENT-1)
+
+/* These are the macros used by dynamic scheduling policy */
+#ifndef UINT32_MAX
+#define UINT32_MAX             (4294967295U)
+#endif
+#define priority_to_prcpumsec(prio) (UINT32_MAX - prio)
+#define prcpumsec_to_priority(msec) (UINT32_MAX - msec)
+#define min_priority 0

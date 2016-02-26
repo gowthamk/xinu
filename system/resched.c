@@ -1,7 +1,7 @@
 /* resched.c - resched, resched_cntl */
 
 #include <xinu.h>
-
+extern int32 lab2flag;
 struct	defer	Defer;
 
 /*------------------------------------------------------------------------
@@ -29,18 +29,30 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
     ptold->prctxswintime = clktimemsec;
 
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
-		if (ptold->prprio > firstkey(readylist)) {
-			return;
-		}
+	
+        if (lab2flag == 4) {/* CPUTIME-BASED SCHEDULING */
+            /* If old process's prcpumsec is less than that of head 
+             * process in the readylist, old proces continues running. */
+            if (ptold->prcpumsec < priority_to_prcpumsec(firstkey(readylist))) {
+                return;
+            }
+        } else {/* DEFAULT SCHEDULING */ 
+            if (ptold->prprio > firstkey(readylist)) {
+                return;
+            }
+        }
 
 		/* Old process will no longer remain current */
 
 		ptold->prstate = PR_READY;
-		insert(currpid, readylist, ptold->prprio);
+        uint32 ptold_prio = (lab2flag == 4)?
+                  (prcpumsec_to_priority(ptold->prcpumsec))
+                : (ptold->prprio);
+		insert(currpid, readylist, ptold_prio);
 	}
 
 	/* Force context switch to highest priority ready process */
-
+    
 	currpid = dequeue(readylist);
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
@@ -48,10 +60,10 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
     /* Increase swap count for old process */
     ptold->prctxswcount += 1;
-    /* Set swap-in time for new process */
+    /* Set the swap-in time for the new process */
     ptnew->prctxswintime = clktimemsec;
 
-    /* Actually context switch */
+    /* Perform the context switch */
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	/* Old process returns here when resumed */

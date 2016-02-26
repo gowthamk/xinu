@@ -2,6 +2,7 @@
 
 #include <xinu.h>
 
+extern int32 lab2flag;
 qid16	readylist;			/* Index of ready list		*/
 
 /*------------------------------------------------------------------------
@@ -22,7 +23,10 @@ status	ready(
 
 	prptr = &proctab[pid];
 	prptr->prstate = PR_READY;
-	insert(pid, readylist, prptr->prprio);
+    int32 init_prio = /* The new process hasn't run. Its prcpumsec is zero. */
+                      (lab2flag == 4)? (prcpumsec_to_priority(0)): (prptr->prprio);
+    //kprintf("PID %d is ready\n",pid);
+	insert(pid, readylist, init_prio);
 	resched();
 
 	return OK;

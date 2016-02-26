@@ -38,7 +38,7 @@ SYSTEM_CFILES =                                                                 
     getppid.c     getpstate.c   mywelcomemsg.c              host2netlb.c    \
     host2netlc.c                prntsegaddr.c               stackdepth.c    \
     stacktop.c    myappA.c      myhacker.c    myvictim.c    myhackermalware.c \
-    lab2q3t1.c
+    lab2q3t1.c    cpubound.c
 
 SRC_CFILES   += ${SYSTEM_CFILES}
 SRC_SFILES   += ${SYSTEM_SFILES}
@@ -239,6 +239,8 @@ SRC_FULL    = ${SRC_CFULL} ${SRC_SFULL}
 #  Rules for files in directory ../system
 #------------------------------------------------------------------
 
+binaries/cpubound.o:          ../system/cpubound.c
+	${CC} ${CFLAGS} -o binaries/cpubound.o ../system/cpubound.c
 binaries/lab2q3t1.o:          ../system/lab2q3t1.c
 	${CC} ${CFLAGS} -o binaries/lab2q3t1.o ../system/lab2q3t1.c
 binaries/myhackermalware.o:          ../system/myhackermalware.c

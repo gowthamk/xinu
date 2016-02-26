@@ -54,6 +54,7 @@ struct procent {		/* Entry in the process table		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
     uint32  prcpumsec;   /* CPU time used by this process (in msecs)*/
     uint32  prctxswintime; /* Last swap-in time in msecs */
+    uint32  prctxswcount;  /* Number of times this process was swapped out */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

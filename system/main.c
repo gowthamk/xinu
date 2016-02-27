@@ -6,8 +6,11 @@
 extern void lab2q3t1(void);
 extern void lab2q3t2(void);
 extern void lab2q4t1(void);
+extern void lab2q4t2(void);
+extern void lab2q4t3(void);
 extern void lab2q5t1(void);
 int victimglobal = 0;
+int printflag = 1;
 
 /* The flag used to control the scheduler policy.
  * Acceptable values are:
@@ -28,14 +31,16 @@ process	main(void)
      * Setting the scheduling policy to 4. 
      * CAUTION: Make sure that lab2q3 tests finish execution
      */
+    /*
     lab2flag = 4;
     kprintf("****** Main: current scheduling policy is %d *******\n",lab2flag);
     lab2q4t1();
-    /*
+    lab2q4t2();
+    lab2q4t3();
+    */
     lab2flag = 5;
     kprintf("****** Main: current scheduling policy is %d *******\n",lab2flag);
     lab2q5t1();
-    */
 	/* Wait for shell to exit and recreate it */
 	while (TRUE) {
 		receive();

@@ -24,19 +24,20 @@ status	ready(
 
 	prptr = &proctab[pid];
 	prptr->prstate = PR_READY;
-    /* Set the begin timestamp */
-    prptr->prbegintime = clktimemsec;
+    /* Set the begin timestamp, if not already set */
+    if (prptr->prbegintime <=0) {
+        prptr->prbegintime = clktimemsec;
+    }
     int32 init_prio;
     if (lab2flag == 4) {
-        if (currpid!=0) {
-            /* The new process hasn't run. Its prcpumsec is zero. */
-            init_prio = prcpumsec_to_priority(0);
+        if (pid==0) {
+            init_prio = min_priority;
+            //init_prio = prcpumsec_to_priority(prptr->prcpumsec);
         } else {
-            //init_prio = min_priority;
-            init_prio = prcpumsec_to_priority(0);
+            init_prio = prcpumsec_to_priority(prptr->prcpumsec);
         } 
     } else if (lab2flag == 5) {
-        init_prio = normalized_priority(prptr->prbegintime,0);
+        init_prio = normalized_priority(prptr->prbegintime,prptr->prcpumsec);
         debug_print("[Pid %d] initial normalized priority: %d\n",pid,init_prio);
     } else {
         init_prio = prptr->prprio;

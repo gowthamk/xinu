@@ -15,17 +15,22 @@ struct	defer	Defer;
  *  where elapsed_time is the time elapsed since the begin_time.
  */
 uint32 normalized_priority(uint32 begin_time, uint32 cpu_time) {
+    uint32 prio = clktimemsec - (begin_time + cpu_time);
+    if (prio < min_priority) {
+        /*
+         * If normalized_priority is less than min_priority, we return 
+         * min_priority instead.
+         */
+        return min_priority;
+    } else if (prio > max_priority) {
+        return max_priority;
+    }
+    return prio;
     /*
-     * If cpu_time receieved by this process is zero, then the
-     * process gets max priority.
-     */
     if (cpu_time == 0) {
         return max_priority;
     }
     uint32 elapsed_time = clktimemsec - begin_time;
-    /*
-     * elapsed_time cannot be zero since cpu_time is not zero.
-     */
     debug_print("[Pid %d] cpu_time = %d. elapsed_time=%d\n",currpid
             , cpu_time, elapsed_time);
     uint32 offset = (max_priority/elapsed_time) * (cpu_time);
@@ -33,15 +38,13 @@ uint32 normalized_priority(uint32 begin_time, uint32 cpu_time) {
                 , currpid, max_priority, offset);
     uint32 normalized_priority = max_priority - offset;
     debug_print("[Pid %d] normalized prio is %d\n",currpid, normalized_priority);
-    /*
-     * If normalized_priority is less than min_priority, we return 
-     * min_priority instead.
-     */
+    
     if(normalized_priority < min_priority) {
         debug_print("[Pid %d] returning min_priority %d\n",currpid, min_priority);
         return min_priority;
     }
     return normalized_priority;
+     */
 }
 
 /*------------------------------------------------------------------------
@@ -61,6 +64,16 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		return;
 	}
 
+    if (lab2flag == 5) {
+        /* Update priorities of all processes in the ready queue.*/
+        int16 curr = firstid(readylist);
+        while (curr != queuetail(readylist)) {
+            queuetab[curr].qkey += QUANTUM;
+            curr = queuetab[curr].qnext;
+	}
+
+    }
+
 	/* Point to process table entry for the current (old) process */
 
 	ptold = &proctab[currpid];
@@ -70,11 +83,16 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
     ptold->prctxswintime = clktimemsec;
 
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
+        /* Process requesting an IO does not come here */
 	
         if (lab2flag == 4) {/* CPUTIME-BASED SCHEDULING */
             /* If old process's prcpumsec is less than that of head 
              * process in the readylist, old proces continues running. */
-            if (ptold->prcpumsec < priority_to_prcpumsec(firstkey(readylist))) {
+            if (currpid!=0 && 
+                    ptold->prcpumsec < priority_to_prcpumsec(firstkey(readylist))) {
+                return;
+            } else if (currpid==0 && 
+                    priority_to_prcpumsec(firstkey(readylist)) < min_priority) {
                 return;
             }
         } else if (lab2flag == 5) {/* NORMALIZED SCHEDULING */
@@ -102,8 +120,8 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
             if (currpid!=0) {
                 ptold_prio = prcpumsec_to_priority(ptold->prcpumsec);
             } else {
-                //ptold_prio = min_priority;
-                ptold_prio = prcpumsec_to_priority(ptold->prcpumsec);
+                ptold_prio = min_priority;
+                //ptold_prio = prcpumsec_to_priority(ptold->prcpumsec);
             }
         } else if (lab2flag == 5) {
             ptold_prio = ptold_normalized_prio;
@@ -116,7 +134,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	}
 
 	/* Force context switch to highest priority ready process */
-    
+   
 	currpid = dequeue(readylist);
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;

@@ -40,3 +40,7 @@
 #include <multiboot.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifndef debug_print
+#define debug_print dont_print
+#endif

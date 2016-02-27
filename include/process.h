@@ -25,7 +25,7 @@
 /* Process initialization constants */
 
 #define	INITSTK		65536	/* Initial process stack size		*/
-#define	INITPRIO	20	/* Initial process priority		*/
+#define	INITPRIO	1000	/* Initial process priority		*/
 #define	INITRET		userret	/* Address to which process returns	*/
 
 /* Inline code to check process ID (assumes interrupts are disabled)	*/
@@ -55,6 +55,7 @@ struct procent {		/* Entry in the process table		*/
     uint32  prcpumsec;   /* CPU time used by this process (in msecs)*/
     uint32  prctxswintime; /* Last swap-in time in msecs */
     uint32  prctxswcount;  /* Number of times this process was swapped out */
+    uint32  prbegintime; /* creation timestamp (msecs) */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

@@ -40,6 +40,6 @@ extern	struct qentry	queuetab[];
 #endif
 /* These are the macros used by dynamic scheduling policy */
 #define min_priority 0
-#define max_priority MAXKEY - 1
+#define max_priority (MAXKEY - 1)
 #define priority_to_prcpumsec(prio) (max_priority - prio)
 #define prcpumsec_to_priority(msec) (((max_priority - msec) < min_priority)? min_priority : (max_priority - msec))

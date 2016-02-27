@@ -4,6 +4,46 @@
 extern int32 lab2flag;
 struct	defer	Defer;
 
+
+/*
+ * @param begin_time is the creation timestamp (msecs) of the process.
+ * @param cpu_time is the cpu time (msecs) that this process recieved.
+ * @return normalized_priority of this process, defined as:
+ *
+ *     normalized_priority = max_priority(1 - cpu_time/elapsed_time)
+ *
+ *  where elapsed_time is the time elapsed since the begin_time.
+ */
+uint32 normalized_priority(uint32 begin_time, uint32 cpu_time) {
+    /*
+     * If cpu_time receieved by this process is zero, then the
+     * process gets max priority.
+     */
+    if (cpu_time == 0) {
+        return max_priority;
+    }
+    uint32 elapsed_time = clktimemsec - begin_time;
+    /*
+     * elapsed_time cannot be zero since cpu_time is not zero.
+     */
+    debug_print("[Pid %d] cpu_time = %d. elapsed_time=%d\n",currpid
+            , cpu_time, elapsed_time);
+    uint32 offset = (max_priority/elapsed_time) * (cpu_time);
+    debug_print("[Pid %d] max_priority is %d. offset is %d\n"
+                , currpid, max_priority, offset);
+    uint32 normalized_priority = max_priority - offset;
+    debug_print("[Pid %d] normalized prio is %d\n",currpid, normalized_priority);
+    /*
+     * If normalized_priority is less than min_priority, we return 
+     * min_priority instead.
+     */
+    if(normalized_priority < min_priority) {
+        debug_print("[Pid %d] returning min_priority %d\n",currpid, min_priority);
+        return min_priority;
+    }
+    return normalized_priority;
+}
+
 /*------------------------------------------------------------------------
  *  resched  -  Reschedule processor to highest priority eligible process
  *------------------------------------------------------------------------
@@ -12,6 +52,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 {
 	struct procent *ptold;	/* Ptr to table entry for old process	*/
 	struct procent *ptnew;	/* Ptr to table entry for new process	*/
+    uint32 ptold_normalized_prio = min_priority; /* For lab2Q5. */
 
 	/* If rescheduling is deferred, record attempt and return */
 
@@ -36,6 +77,17 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
             if (ptold->prcpumsec < priority_to_prcpumsec(firstkey(readylist))) {
                 return;
             }
+        } else if (lab2flag == 5) {/* NORMALIZED SCHEDULING */
+            /* Old process normalized priority */
+            ptold_normalized_prio = normalized_priority(ptold->prbegintime
+                                                       , ptold->prcpumsec);
+
+            debug_print("[Pid %d @ %d msec] normalized_priority(%d,%d)=%d\n"
+                    , currpid, clktimemsec, ptold->prbegintime
+                    , ptold->prcpumsec, ptold_normalized_prio);
+            if (ptold_normalized_prio > firstkey(readylist)) {
+                return;
+            }
         } else {/* DEFAULT SCHEDULING */ 
             if (ptold->prprio > firstkey(readylist)) {
                 return;
@@ -53,6 +105,10 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
                 //ptold_prio = min_priority;
                 ptold_prio = prcpumsec_to_priority(ptold->prcpumsec);
             }
+        } else if (lab2flag == 5) {
+            ptold_prio = ptold_normalized_prio;
+            //kprintf("[Pid %d] Swapping. New normalized priority: %d\n"
+            //            , currpid, ptold_prio);
         } else {
             ptold_prio = ptold->prprio;
         }

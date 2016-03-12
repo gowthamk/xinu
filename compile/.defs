@@ -35,7 +35,8 @@ SYSTEM_CFILES =                                                                 
 	signal.c      signaln.c     sleep.c       stacktrace.c  suspend.c       \
 	unsleep.c     userret.c     wait.c        wakeup.c      write.c         \
 	xdone.c       yield.c       app1.c        app2.c        app3.c          \
-    getppid.c     getpstate.c   mywelcomemsg.c
+    getppid.c     getpstate.c   mywelcomemsg.c              gpqueue.c       \
+    test_gpqueue.c
 
 SRC_CFILES   += ${SYSTEM_CFILES}
 SRC_SFILES   += ${SYSTEM_SFILES}
@@ -236,6 +237,10 @@ SRC_FULL    = ${SRC_CFULL} ${SRC_SFULL}
 #  Rules for files in directory ../system
 #------------------------------------------------------------------
 
+binaries/test_gpqueue.o:          ../system/test_gpqueue.c
+	${CC} ${CFLAGS} -o binaries/test_gpqueue.o ../system/test_gpqueue.c
+binaries/gpqueue.o:          ../system/gpqueue.c
+	${CC} ${CFLAGS} -o binaries/gpqueue.o ../system/gpqueue.c
 binaries/mywelcomemsg.o:          ../system/mywelcomemsg.c
 	${CC} ${CFLAGS} -o binaries/mywelcomemsg.o ../system/mywelcomemsg.c
 binaries/app1.o:          ../system/app1.c

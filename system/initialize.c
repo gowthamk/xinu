@@ -187,7 +187,8 @@ static	void	sysinit()
 
 	/* Create a ready list for processes */
 
-	readylist = newqueue();
+	//readylist = newqueue();
+    readylist = mlfbq_new();
 
 	/* Initialize the real time clock */
 

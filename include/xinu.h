@@ -43,6 +43,7 @@
 /* Extensions to the core */
 #include <ts_disptb.h>
 #include <gpqueue.h>
+#include <multilevelfbq.h>
 
 #ifndef debug_print
 #define debug_print dont_print

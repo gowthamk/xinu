@@ -4,7 +4,7 @@
 
 struct	defer	Defer;
 
-void ts_analyze() {
+void ts_update() {
     struct procent *p = &proctab[currpid];
     int old_ts_prio, new_ts_prio, new_ts_quantum;
     old_ts_prio = p->tsprio;
@@ -50,23 +50,23 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
 	ptold = &proctab[currpid];
 
-    /* Calculate TS priorities */
-    ts_analyze();
+    /* Update TS metrics for the current process */
+    ts_update();
 
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
-		if (ptold->prprio > firstkey(readylist)) {
+		if (ptold->tsprio > mlfbq_firstkey(readylist)) {
 			return;
 		}
 
 		/* Old process will no longer remain current */
 
 		ptold->prstate = PR_READY;
-		insert(currpid, readylist, ptold->prprio);
+		mlfbq_insert(currpid, readylist);
 	}
 
 	/* Force context switch to highest priority ready process */
 
-	currpid = dequeue(readylist);
+	currpid = mlfbq_dequeue(readylist);
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
 	preempt = ptnew->tsquantum; //QUANTUM;		/* Reset time slice for process	*/

@@ -37,7 +37,7 @@ SYSTEM_CFILES =                                                                 
 	xdone.c       yield.c       app1.c        app2.c        app3.c          \
     getppid.c     getpstate.c   mywelcomemsg.c              gpqueue.c       \
     test_gpqueue.c              sendbt.c      msg_sender.c  msg_receiver.c  \
-    cpubound.c    iobound.c     lab3q3.c
+    cpubound.c    iobound.c     lab3q3.c      multilevelfbq.c
 
 SRC_CFILES   += ${SYSTEM_CFILES}
 SRC_SFILES   += ${SYSTEM_SFILES}
@@ -238,6 +238,8 @@ SRC_FULL    = ${SRC_CFULL} ${SRC_SFULL}
 #  Rules for files in directory ../system
 #------------------------------------------------------------------
 
+binaries/multilevelfbq.o:          ../system/multilevelfbq.c
+	${CC} ${CFLAGS} -o binaries/multilevelfbq.o ../system/multilevelfbq.c
 binaries/lab3q3.o:          ../system/lab3q3.c
 	${CC} ${CFLAGS} -o binaries/lab3q3.o ../system/lab3q3.c
 binaries/iobound.o:          ../system/iobound.c

@@ -42,6 +42,14 @@ void* dequeueg(struct gpqueue *gpq) {
     return cur_head_entry->data;
 }
 
+void* firstkeyg(struct gpqueue* gpq) {
+    if (gpq->size <=0) {
+        return NULL;
+    }
+    struct gpqentry *cur_head_entry = &(gpq->entries[gpq->head]);
+    return cur_head_entry->data;
+}
+
 void printgq(struct gpqueue *gpq, void (*print_data)(void*)) {
     int i;
     struct gpqentry *cur_entry = &(gpq->entries[gpq->head]);

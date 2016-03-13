@@ -2,7 +2,8 @@
 
 #include <xinu.h>
 
-qid16	readylist;			/* Index of ready list		*/
+//qid16	readylist;			/* Index of ready list		*/
+struct mlfbq *readylist;     /* ready list is now mlfbq for TS scheduling */
 
 /*------------------------------------------------------------------------
  *  ready  -  Make a process eligible for CPU service
@@ -22,7 +23,7 @@ status	ready(
 
 	prptr = &proctab[pid];
 	prptr->prstate = PR_READY;
-	insert(pid, readylist, prptr->prprio);
+	mlfbq_insert(pid, readylist);
 	resched();
 
 	return OK;

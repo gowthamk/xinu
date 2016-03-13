@@ -8,12 +8,20 @@
  */
 void unblock_a_sender(void) {
     struct procent *prptr = &proctab[currpid];
-    if(!is_emptyg(prptr->senderwaitq)) {
+    /* A sender in wait queue may have already stopped waiting.
+     * We dequeue until we find a sender who is still waiting */
+    while(!is_emptyg(prptr->senderwaitq)) {
         pid32 sender = (pid32) dequeueg(prptr->senderwaitq);
         struct procent *sendprptr = &proctab[sender];
         if (sendprptr->prstate == PR_SEND) {
             /* If the sender is blocked on send call, make it ready */
             ready(sender);
+            break;
+        } else if (sendprptr->prstate == PR_SENTIM) {
+            /* If the sender is on timed wait, unsleep and make it ready */
+            unsleep(sender);
+            ready(sender);
+            break;
         }
     }
     return;

@@ -29,7 +29,8 @@ status	unsleep(
 	/* Verify that candidate process is on the sleep queue */
 
 	prptr = &proctab[pid];
-	if ((prptr->prstate!=PR_SLEEP) && (prptr->prstate!=PR_RECTIM)) {
+	if ((prptr->prstate!=PR_SLEEP) && (prptr->prstate!=PR_RECTIM)
+                                   && (prptr->prstate!=PR_SENTIM)) {
 		restore(mask);
 		return SYSERR;
 	}

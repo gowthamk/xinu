@@ -38,6 +38,7 @@ syscall	kill(
 
 	case PR_SLEEP:
 	case PR_RECTIM:
+    case PR_SENTIM:
 		unsleep(pid);
 		prptr->prstate = PR_FREE;
 		break;

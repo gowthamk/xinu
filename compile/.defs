@@ -36,7 +36,7 @@ SYSTEM_CFILES =                                                                 
 	unsleep.c     userret.c     wait.c        wakeup.c      write.c         \
 	xdone.c       yield.c       app1.c        app2.c        app3.c          \
     getppid.c     getpstate.c   mywelcomemsg.c              gpqueue.c       \
-    test_gpqueue.c
+    test_gpqueue.c              sendbt.c      msg_sender.c  msg_receiver.c
 
 SRC_CFILES   += ${SYSTEM_CFILES}
 SRC_SFILES   += ${SYSTEM_SFILES}
@@ -237,6 +237,12 @@ SRC_FULL    = ${SRC_CFULL} ${SRC_SFULL}
 #  Rules for files in directory ../system
 #------------------------------------------------------------------
 
+binaries/msg_receiver.o:          ../system/msg_receiver.c
+	${CC} ${CFLAGS} -o binaries/msg_receiver.o ../system/msg_receiver.c
+binaries/msg_sender.o:          ../system/msg_sender.c
+	${CC} ${CFLAGS} -o binaries/msg_sender.o ../system/msg_sender.c
+binaries/sendbt.o:          ../system/sendbt.c
+	${CC} ${CFLAGS} -o binaries/sendbt.o ../system/sendbt.c
 binaries/test_gpqueue.o:          ../system/test_gpqueue.c
 	${CC} ${CFLAGS} -o binaries/test_gpqueue.o ../system/test_gpqueue.c
 binaries/gpqueue.o:          ../system/gpqueue.c

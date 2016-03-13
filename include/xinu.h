@@ -40,3 +40,5 @@
 #include <multiboot.h>
 #include <stdio.h>
 #include <string.h>
+/* Extensions to the core */
+#include <gpqueue.h>

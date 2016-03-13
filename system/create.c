@@ -52,6 +52,12 @@ pid32	create(
 	prptr->prsem = -1;
 	prptr->prparent = (pid32)getpid();
 	prptr->prhasmsg = FALSE;
+    prptr->sndmsg = FALSE;
+
+    /* Set up a queue for processes waiting to send message to this process. */
+    struct gpqueue* gpq = (struct gpqueue*)getstk(sizeof(struct gpqueue));
+    gpq->size = gpq->head = gpq->tail = 0;
+    prptr->senderwaitq = gpq;
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = CONSOLE;

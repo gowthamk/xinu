@@ -557,6 +557,9 @@ extern	syscall	semreset(sid32, int32);
 /* in file send.c */
 extern	syscall	send(pid32, umsg32);
 
+/* in file sendbt.c */
+extern	syscall	sendbt(pid32, umsg32, int32);
+
 /* in file shell.c */
 extern 	process shell(did32);
 

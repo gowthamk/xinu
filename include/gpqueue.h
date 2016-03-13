@@ -15,3 +15,4 @@ struct gpqueue {
 extern int32 enqueueg(struct gpqueue*, void*);
 extern void* dequeueg(struct gpqueue*);
 extern void  printgq(struct gpqueue*, void (*print_data)(void*));
+extern bool8 is_emptyg(struct gpqueue*);

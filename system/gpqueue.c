@@ -1,6 +1,4 @@
 #include<xinu.h>
-#include<stdlib.h>
-#include<gpqueue.h>
 
 int32 enqueueg(struct gpqueue *gpq, void* data) {
     if (gpq->size >= NPROC) {
@@ -57,4 +55,10 @@ void printgq(struct gpqueue *gpq, void (*print_data)(void*)) {
     }
     kprintf("]\n");
     return;
+}
+bool8 is_emptyg(struct gpqueue *gpq) {
+    if (gpq->size == 0)
+        return TRUE;
+    else
+        return FALSE;
 }

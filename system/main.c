@@ -2,13 +2,25 @@
 
 #include <xinu.h>
 #include <stdio.h>
-#include<gpqueue.h>
+extern void sender(pid32);
+extern void receiver(void);
 
-struct gpqueue gpq;
-extern void test_gpqueue(void);
+extern void test_gpqueue(struct gpqueue*);
 process	main(void)
 {
-    test_gpqueue();
+    /*struct gpqueue* gpq = (struct gpqueue*)getstk(sizeof(struct gpqueue));
+    gpq->size = gpq->head = gpq->tail = 0;
+    test_gpqueue(gpq);*/
+    kprintf("Main creating a receiver and three senders...\n");
+    pid32 receiver_pid = create(receiver, 1024, 20, "receiver", 0);
+    sleepms(100);
+    resume(create(sender, 1024, 20, "sender1", 1, receiver_pid));
+    sleepms(100);
+    resume(create(sender, 1024, 20, "sender2", 1, receiver_pid));
+    sleepms(100);
+    resume(create(sender, 1024, 20, "sender3", 1, receiver_pid));
+    resume(receiver_pid);
+    sleep(4);
 	while (TRUE) {
 		receive();
 		sleepms(200);

@@ -4,6 +4,8 @@
 #include <stdio.h>
 extern void sender(pid32,int);
 extern void receiver(void);
+extern void lab3q3t1(void);
+extern void lab3q3t2(void);
 extern void lab3q3t3(void);
 extern void test_gpqueue(struct gpqueue*);
 process	main(void)
@@ -23,9 +25,12 @@ process	main(void)
     resume(receiver_pid);
     sleep(8);
     */
+    kprintf("*** Main running lab3q3t1 testcase\n");
+    lab3q3t1();
+    kprintf("*** Main running lab3q3t2 testcase\n");
+    lab3q3t2();
     kprintf("*** Main running lab3q3t3 testcase\n");
     lab3q3t3();
-    sleep(7);
 	while (TRUE) {
 		receive();
 		sleepms(200);

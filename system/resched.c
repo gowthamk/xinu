@@ -4,6 +4,32 @@
 
 struct	defer	Defer;
 
+void ts_analyze() {
+    struct procent *p = &proctab[currpid];
+    int old_ts_prio, new_ts_prio, new_ts_quantum;
+    old_ts_prio = p->tsprio;
+    new_ts_quantum = tsdtab[old_ts_prio].ts_quantum;
+    if (p->prstate == PR_CURR) {
+        debug_print("[Pid %d] is cpu-intensive\n", currpid);
+        new_ts_prio = tsdtab[old_ts_prio].ts_tqexp;
+    } else if (p->prstate == PR_FREE){
+        debug_print("[Pid %d] is finishing!\n", currpid);
+        new_ts_prio = TS_INIT_PRIO;
+    } else if (p->prstate == PR_READY){
+        panic("Currently running process cannot be in ready queue!\n");
+        return;
+    } else {
+        debug_print("[Pid %d] is io-intensive(%d)\n", currpid, p->prstate);
+        new_ts_prio = tsdtab[old_ts_prio].ts_slpret;
+    }
+    debug_print("[Pid %d] New priority is %d, and quantum is %d\n"
+            , currpid, new_ts_prio, new_ts_quantum);
+    /* Update p's proctab entry */
+    p->tsprio = new_ts_prio;
+    p->tsquantum = new_ts_quantum;
+    return;
+}
+
 /*------------------------------------------------------------------------
  *  resched  -  Reschedule processor to highest priority eligible process
  *------------------------------------------------------------------------
@@ -23,6 +49,9 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	/* Point to process table entry for the current (old) process */
 
 	ptold = &proctab[currpid];
+
+    /* Calculate TS priorities */
+    ts_analyze();
 
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
 		if (ptold->prprio > firstkey(readylist)) {

@@ -41,4 +41,9 @@
 #include <stdio.h>
 #include <string.h>
 /* Extensions to the core */
+#include <ts_disptb.h>
 #include <gpqueue.h>
+
+#ifndef debug_print
+#define debug_print dont_print
+#endif

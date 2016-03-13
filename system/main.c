@@ -4,13 +4,14 @@
 #include <stdio.h>
 extern void sender(pid32,int);
 extern void receiver(void);
-
+extern void lab3q3t3(void);
 extern void test_gpqueue(struct gpqueue*);
 process	main(void)
 {
     /*struct gpqueue* gpq = (struct gpqueue*)getstk(sizeof(struct gpqueue));
     gpq->size = gpq->head = gpq->tail = 0;
     test_gpqueue(gpq);*/
+    /*
     kprintf("Main creating a receiver and three senders...\n");
     pid32 receiver_pid = create(receiver, 1024, 20, "receiver", 0);
     sleepms(100);
@@ -21,6 +22,10 @@ process	main(void)
     resume(create(sender, 1024, 20, "sender3", 2, receiver_pid, 0));
     resume(receiver_pid);
     sleep(8);
+    */
+    kprintf("*** Main running lab3q3t3 testcase\n");
+    lab3q3t3();
+    sleep(7);
 	while (TRUE) {
 		receive();
 		sleepms(200);

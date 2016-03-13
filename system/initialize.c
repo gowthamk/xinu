@@ -21,7 +21,7 @@ extern  void mywelcomemsg(void); /* Prints welcome message for gkaki */
 struct	procent	proctab[NPROC];	/* Process table			*/
 struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
-
+struct ts_disptb tsdtab[TS_NUM_PRIO];
 /* Active system status */
 
 int	prcount;		/* Total number of live processes	*/
@@ -130,6 +130,26 @@ static	void	sysinit()
 	/* Scheduling is not currently blocked */
 
 	Defer.ndefers = 0;
+
+    /* Initialize Solaris TS dispatch table */
+    int ts_nclasses = 5; 
+    int ts_class_size = TS_NUM_PRIO / ts_nclasses;
+    int ts_class_quantum = TS_MAX_QUANTUM / ts_nclasses;
+    int ts_min_slpret = TS_MAX_PRIO - ts_nclasses + 1;
+    for (i=0; i<= TS_MAX_PRIO; i++) {
+        int class_id = i/ts_class_size;
+        tsdtab[i].ts_quantum = TS_MAX_QUANTUM - (class_id * ts_class_quantum);
+        tsdtab[i].ts_tqexp = (class_id == 0)? 0 : (i-ts_class_size);
+        tsdtab[i].ts_slpret = ts_min_slpret + class_id;
+    }
+    /* print the table */
+    kprintf("ts_quantum\tts_tqexp\tts_slpret\tPRIORITY\n");
+    struct ts_disptb entry;
+    for(i=0;i<=TS_MAX_PRIO;i++) {
+        entry = tsdtab[i];
+        kprintf("%d\t\t%d\t\t%d\t\t%d\n", entry.ts_quantum, entry.ts_tqexp
+                                  , entry.ts_slpret, i);
+    }
 
 	/* Initialize process table entries free */
 

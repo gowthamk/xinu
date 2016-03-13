@@ -106,3 +106,8 @@ syscall kprintf(char *fmt, ...)
 	va_end(ap);
 	return OK;
 }
+
+syscall dont_print(char* fmt, ...)
+{
+    return OK;
+}

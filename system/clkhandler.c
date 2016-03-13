@@ -39,7 +39,10 @@ void	clkhandler()
 	/*   remaining time reaches zero			     */
 
 	if((--preempt) <= 0) {
-		preempt = QUANTUM;
+        /* If this process remains eligible AND its tsquantum is not
+         * updated in resched (shouldn't be the case) then the following
+         * setting will use the exisiting tsquantum value. */
+		preempt = proctab[currpid].tsquantum;//QUANTUM;
 		resched();
 	}
 }

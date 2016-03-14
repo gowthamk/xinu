@@ -16,4 +16,9 @@ void iobound(int n, int loop1, int loop2, int t, uint32 (*prio_fn)(pid32)) {
           kprintf(".");
       }
     }
+    uint32 run_time = proctab[currpid].cpumsec;
+    uint32 elapsed_time = clkmsec - proctab[currpid].begunat;
+    sleepms(30*n);
+    kprintf("\n[Pid %d (iobound)] FINISHED. (CPU time/total time)"
+            "= (%dms/%dms).\n", currpid, run_time, elapsed_time);
 }

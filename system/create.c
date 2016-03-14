@@ -46,6 +46,7 @@ pid32	create(
     prptr->prprio = priority;
     prptr->tsprio = TS_INIT_PRIO;/* Setting priority for TS scheduler */
     prptr->tsquantum = tsdtab[prptr->tsprio].ts_quantum;
+    prptr->begunat = clkmsec; /* Setting the creation timestamp */
 	prptr->prstkbase = (char *)saddr;
 	prptr->prstklen = ssize;
 	prptr->prname[PNMLEN-1] = NULLCH;

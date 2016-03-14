@@ -55,14 +55,15 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptold = &proctab[currpid];
 
     /* Update time counters for the old process */
-    //ptold->prcpumsec += clktimemsec - ptold->prctxswintime;
-    //ptold->prctxswintime = clktimemsec;
+    ptold->cpumsec += clkmsec - ptold->ctxswintime;
+    ptold->ctxswintime = clkmsec;
 
     /* Update TS metrics for the current process */
     ts_update();
 
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
-		if (ptold->tsprio > mlfbq_firstkey(readylist)) {
+        /* Note: mlfbq_firstkey may return SYSERR, which is < 0 */
+		if (currpid!=0 && ptold->tsprio > mlfbq_firstkey(readylist)) {
 			return;
 		}
 
@@ -83,7 +84,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
 	preempt = ptnew->tsquantum; //QUANTUM;		/* Reset time slice for process	*/
-    //ptnew->prctxswintime = clktimemsec; /* Set the swap-in time for the new process */
+    ptnew->ctxswintime = clkmsec; /* Set the swap-in time for the new process */
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	/* Old process returns here when resumed */

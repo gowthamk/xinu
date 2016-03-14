@@ -22,6 +22,7 @@ void	clkhandler()
 
 		count1000 = 1000;
 	}
+    clkmsec++;
 
 	/* Handle sleeping processes if any exist */
 

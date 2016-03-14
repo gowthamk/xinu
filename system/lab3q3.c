@@ -52,8 +52,26 @@ void lab3q3t3() {
                         , 2*i+1, LOOP1, LOOP2/1000, 3, &prio_fn));
     }
     /* Sleeping for concurrency to end */
-    sleep(8);
+    sleep(6);
     kprintf("LAB3Q3T3: Ending\n");
     printflag = 1;
+    return;
+}
+void lab3q3t4() {
+    int i;
+    int sleep_times[6] = {100, 500, 50, 2000, 100, 0};
+    kprintf("---------------------------------------------------------\n");
+    kprintf("LAB3Q3T4: 6 cpu-bound processes beginning at different times\n");
+    kprintf("---------------------------------------------------------\n");
+    for(i=0; i<6;i++) {
+        kprintf("lab3q3t1 creating new process \n");
+	    resume(create(cpubound, 2048, 1, "cpubound", 4
+                        , i, 20, 90000, &prio_fn));
+        sleepms(sleep_times[i]);
+        kprintf("lab3q3t1 wokeup \n");
+    }
+    /* Sleeping for concurrency to end */
+    sleep(20);
+    kprintf("LAB3Q3T4: Ending\n");
     return;
 }

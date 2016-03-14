@@ -20,16 +20,13 @@ void cpubound(int n, int loop1, int loop2, uint32 (*prio_fn)(pid32)) {
       }
     }
     // Print the CPU time consumed by the process that is recorded in the
-    // prcpumsec field of the current process's process table entry.
+    // cpumsec field of the current process's process table entry.
 
-    /*
-    uint32 run_time = proctab[currpid].prcpumsec;
-    uint32 elapsed_time = clktimemsec - proctab[currpid].prbegintime;
-    uint32 sw_times = proctab[currpid].prctxswcount;
+    uint32 run_time = proctab[currpid].cpumsec;
+    uint32 elapsed_time = clkmsec - proctab[currpid].begunat;
     sleepms(20*n);
-    kprintf("\n[Pid %d (cpubound)] FINISHED. swapped out %d times. (CPU time/total time)"
-            "= (%dms/%dms).\n", currpid, sw_times, run_time, elapsed_time);
-    */
+    kprintf("\n[Pid %d (cpubound)] FINISHED. (CPU time/total time)"
+            "= (%dms/%dms).\n", currpid, run_time, elapsed_time);
 }
 
 

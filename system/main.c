@@ -8,6 +8,10 @@ extern void lab3q3t1(void);
 extern void lab3q3t2(void);
 extern void lab3q3t3(void);
 extern void lab3q3t4(void);
+extern void lab3q4t1(void);
+extern void lab3q4t2(void);
+extern void lab3q4t3(void);
+extern void lab3q4t4(void);
 extern void test_gpqueue(struct gpqueue*);
 process	main(void)
 {
@@ -26,6 +30,7 @@ process	main(void)
     resume(receiver_pid);
     sleep(8);
     */
+    /*
     kprintf("*** Main running lab3q3t1 testcase\n");
     lab3q3t1();
     kprintf("*** Main running lab3q3t2 testcase\n");
@@ -34,6 +39,11 @@ process	main(void)
     lab3q3t3();
     kprintf("*** Main running lab3q3t4 testcase\n");
     lab3q3t4();
+    */
+    lab3q4t1();
+    lab3q4t2();
+    lab3q4t3();
+    lab3q4t4();
 	while (TRUE) {
 		receive();
 		sleepms(200);

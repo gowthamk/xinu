@@ -60,3 +60,13 @@ pid32 mlfbq_dequeue(
     struct gpqueue* top_gpq = &fbq->queues[top_prio];
     return (pid32) dequeueg(top_gpq);
 }
+bool8 mlfbq_is_empty(
+        struct mlfbq* fbq   /* Multi-level queue to be checked for emptiness */
+    )
+{
+    if (top_nonempty_prio(fbq) == -1) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}

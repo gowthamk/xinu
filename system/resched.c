@@ -9,7 +9,11 @@ void ts_update() {
     int old_ts_prio, new_ts_prio, new_ts_quantum;
     old_ts_prio = p->tsprio;
     new_ts_quantum = tsdtab[old_ts_prio].ts_quantum;
-    if (p->prstate == PR_CURR) {
+    if (currpid == 0) {
+        /* null process always runs at min priority */
+        new_ts_prio = 0;
+        new_ts_quantum = 2;
+    } else if (p->prstate == PR_CURR) {
         debug_print("[Pid %d] is cpu-intensive\n", currpid);
         new_ts_prio = tsdtab[old_ts_prio].ts_tqexp;
     } else if (p->prstate == PR_FREE){
@@ -50,6 +54,10 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
 	ptold = &proctab[currpid];
 
+    /* Update time counters for the old process */
+    //ptold->prcpumsec += clktimemsec - ptold->prctxswintime;
+    //ptold->prctxswintime = clktimemsec;
+
     /* Update TS metrics for the current process */
     ts_update();
 
@@ -67,9 +75,15 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	/* Force context switch to highest priority ready process */
 
 	currpid = mlfbq_dequeue(readylist);
+    if (currpid == 0 && !mlfbq_is_empty(readylist)) {
+        /* we reinsert null process at the end of the queue */
+        mlfbq_insert(currpid,readylist);
+        currpid = mlfbq_dequeue(readylist);
+    }
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
 	preempt = ptnew->tsquantum; //QUANTUM;		/* Reset time slice for process	*/
+    //ptnew->prctxswintime = clktimemsec; /* Set the swap-in time for the new process */
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	/* Old process returns here when resumed */

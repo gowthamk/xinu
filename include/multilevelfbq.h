@@ -6,3 +6,4 @@ extern status mlfbq_insert(pid32, struct mlfbq*);
 extern pid32 mlfbq_dequeue(struct mlfbq*);
 extern int mlfbq_firstkey(struct mlfbq*);
 extern struct mlfbq* mlfbq_new(void);
+extern bool8 mlfbq_is_empty(struct mlfbq*);

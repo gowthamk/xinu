@@ -192,6 +192,9 @@ static	void	sysinit()
 	//readylist = newqueue();
     readylist = mlfbq_new();
 
+    /* Initially, alarm queue is empty */
+    alarmq = NULL;
+
 	/* Initialize the real time clock */
 
 	clkinit();

@@ -26,10 +26,20 @@ void	clkhandler()
     /* Incrementing prcpumsec of the current process */
     struct procent* p = &proctab[currpid];
     p->cpumsec++;
+    /* If the current processes requested MYSIGXCPU service, then call the
+     * signal handler. */
     if (p->sighandlers[sigToIndex(MYSIGXCPU)] != NULL && 
                     !p->prdidtime && p->cpumsec >= MYSIGXCPUTIME) {
         p->prdidtime=TRUE;
         (p->sighandlers[sigToIndex(MYSIGXCPU)])(NULL);
+    }
+    /* Alarms */
+    if (alarmq != NULL) {
+        struct procent* p = alarmq->procent;
+        p->alarmms--;
+        if (p->alarmms <= 0) {
+            alarmq = dequeuedq(alarmq);
+        }
     }
 
 	/* Handle sleeping processes if any exist */

@@ -57,6 +57,8 @@ typedef	int32	status;		/* returned status value (OK/SYSERR)	*/
 //extern	qid16	readylist;	/* global ID for list of ready processes*/
 extern struct mlfbq* readylist; /* readylist is now mlfbq for TS scheduling */
 
+extern struct dqentry* alarmq; /* Queue of processes requesting alarm. Lab4q3. */
+
 #define	MINSTK	400		/* minimum stack size in bytes		*/
 
 #define	CONTEXT	64		/* bytes in a function call context on	*/

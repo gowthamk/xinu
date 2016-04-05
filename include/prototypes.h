@@ -579,6 +579,9 @@ extern	syscall	signaln(sid32, int32);
 extern	syscall	sleepms(uint32);
 extern	syscall	sleep(uint32);
 
+/* in file alarmms.c */
+extern	syscall	alarmms(uint32);
+
 /* in file start.S */
 extern	int32	inb(int32);
 extern	int32	inw(int32);

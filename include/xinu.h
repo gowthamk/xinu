@@ -44,6 +44,7 @@
 /* Extensions to the core */
 #include <ts_disptb.h>
 #include <gpqueue.h>
+#include <deltaqueue.h>
 #include <multilevelfbq.h>
 
 #ifndef debug_print

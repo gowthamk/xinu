@@ -84,5 +84,44 @@ void lab4q3t3(void) {
     kprintf("---------------------------------------------------------------\n");
     resume(create(sigxcpufn, 1024, 20, "sigxcpuprocess", 0));
     sleep(2);
+    kprintf("LAB4Q3T3: Ending\n");
+    return;
+}
+
+int alarms_raised = 0;
+int alarmcb(void *ptr) {
+    kprintf("[Pid %d @ t=%d] Alarm callback has been called.\n", currpid, clkmsec);
+    alarms_raised++;
+    return OK;
+}
+int alarm_proc(int numAlarms, int ms) {
+    int i;
+    kprintf("[Pid %d @ t=%d] Registering a MYSIGALRM callback.\n"
+                , currpid, clkmsec);
+    registercbsig(MYSIGALRM,&alarmcb,0);
+    alarmms(ms);
+    kprintf("[Pid %d @ t=%d] Alarm set for %dms.\n",currpid,clkmsec,ms);
+    while(TRUE) {
+        kprintf("[Pid %d @ t=%d] Running.\n", currpid, clkmsec);
+        for(i=0; i<99999999; i++);
+        if (alarms_raised == numAlarms) {
+            kprintf("[Pid %d @ t=%d] Exiting.\n", currpid, clkmsec);
+            return 0;
+        }
+    }
+    return 0;
+}
+void lab4q3t4(void) {
+    alarms_raised = 0;
+    int nprocs = 4;
+    kprintf("---------------------------------------------------------------\n");
+    kprintf("LAB4Q3T4: %d processes with alarms at 850, 350, 600 and 100 ms. \n",nprocs);
+    kprintf("---------------------------------------------------------------\n");
+    resume(create(alarm_proc, 1024, 20, "alarm_proc", 2, nprocs, 850));
+    resume(create(alarm_proc, 1024, 20, "alarm_proc", 2, nprocs, 350));
+    resume(create(alarm_proc, 1024, 20, "alarm_proc", 2, nprocs, 600));
+    resume(create(alarm_proc, 1024, 20, "alarm_proc", 2, nprocs, 100));
+    sleep(3);
+    kprintf("LAB4Q3T4: Ending\n");
     return;
 }

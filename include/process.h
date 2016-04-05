@@ -52,6 +52,7 @@ struct procent {		/* Entry in the process table		*/
 	uint32	prstklen;	/* Stack length in bytes		*/
 	char	prname[PNMLEN];	/* Process name				*/
 	uint32	prsem;		/* Semaphore on which process waits	*/
+    pid32   pid;        /* Pid of this process */
 	pid32	prparent;	/* ID of the creating process		*/
 	umsg32	prmsg;		/* Message sent to this process		*/
 	bool8	prhasmsg;	/* Nonzero iff msg is valid		*/
@@ -66,6 +67,8 @@ struct procent {		/* Entry in the process table		*/
     int (* recvcb)(void *); /* Receive signal handler. Lab4Q2. */
     int (* sighandlers[NMYSIGNALS])(void*); /* Various signal handlers. Lab4Q3. */
     bool8   prdidtime;  /* True if MYSIGXCPU signal has been handled. Lab4Q3.*/
+    bool8   alarmset;   /* True if alarm is currently set. Lab4Q3. */
+    uint32 alarmms; /* (Delta) msecs for alarm. Lab4Q3.  */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

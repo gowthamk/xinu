@@ -94,12 +94,20 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
      * then let the callback know. */
     if (ptold->prhasmsg == TRUE) {
         if (ptold->recvcb != NULL) {
+            ptold->prhasmsg = FALSE;
             (ptold->recvcb)(NULL);
-            ptold->prhasmsg = FALSE;
         } else if (ptold->sighandlers[sigToIndex(MYSIGRECV)] != NULL) {
-            (ptold->sighandlers[sigToIndex(MYSIGRECV)])(NULL);
             ptold->prhasmsg = FALSE;
+            (ptold->sighandlers[sigToIndex(MYSIGRECV)])(NULL);
         }
+    }
+
+    /* If an alarm has been set, and the wait time is zero, then call the alarm
+     * handler. */
+    if(ptold->alarmset && ptold->alarmms <=0 
+                        && ptold->sighandlers[sigToIndex(MYSIGALRM)] != NULL) {
+        ptold->alarmset = FALSE;
+        (ptold->sighandlers[sigToIndex(MYSIGALRM)])(NULL);
     }
 	return;
 }

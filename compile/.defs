@@ -38,7 +38,8 @@ SYSTEM_CFILES =                                                                 
     getppid.c     getpstate.c   mywelcomemsg.c              gpqueue.c       \
     test_gpqueue.c              sendbt.c      msg_sender.c  msg_receiver.c  \
     cpubound.c    iobound.c     multilevelfbq.c             registercb.c    \
-    lab4q2.c      registercbsig.c             lab4q3.c
+    lab4q2.c      registercbsig.c             lab4q3.c      deltaqueue.c    \
+    test_deltaqueue.c           alarmms.c
 
 SRC_CFILES   += ${SYSTEM_CFILES}
 SRC_SFILES   += ${SYSTEM_SFILES}
@@ -239,6 +240,12 @@ SRC_FULL    = ${SRC_CFULL} ${SRC_SFULL}
 #  Rules for files in directory ../system
 #------------------------------------------------------------------
 
+binaries/alarmms.o:          ../system/alarmms.c
+	${CC} ${CFLAGS} -o binaries/alarmms.o ../system/alarmms.c
+binaries/test_deltaqueue.o:          ../system/test_deltaqueue.c
+	${CC} ${CFLAGS} -o binaries/test_deltaqueue.o ../system/test_deltaqueue.c
+binaries/deltaqueue.o:          ../system/deltaqueue.c
+	${CC} ${CFLAGS} -o binaries/deltaqueue.o ../system/deltaqueue.c
 binaries/lab4q3.o:          ../system/lab4q3.c
 	${CC} ${CFLAGS} -o binaries/lab4q3.o ../system/lab4q3.c
 binaries/registercbsig.o:          ../system/registercbsig.c

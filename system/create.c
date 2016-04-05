@@ -42,6 +42,7 @@ pid32	create(
 	prptr = &proctab[pid];
 
 	/* Initialize process table entry for new process */
+    prptr->pid = pid; /* Process's pid */
 	prptr->prstate = PR_SUSP;	/* Initial state is suspended	*/
     prptr->prprio = priority;
     prptr->tsprio = TS_INIT_PRIO;/* Setting priority for TS scheduler */
@@ -54,6 +55,8 @@ pid32	create(
         prptr->sighandlers[i] = NULL;
     }
     prptr->prdidtime = FALSE; /* Process still hasn't exceeded MYSIGXCPUTIME */
+    prptr->alarmset = FALSE; /* Alarm-related fields. Lab4q3. */
+    prptr->alarmms = 0;
 	prptr->prname[PNMLEN-1] = NULLCH;
 	for (i=0 ; i<PNMLEN-1 && (prptr->prname[i]=name[i])!=NULLCH; i++)
 		;

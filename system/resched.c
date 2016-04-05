@@ -86,9 +86,15 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	preempt = ptnew->tsquantum; //QUANTUM;		/* Reset time slice for process	*/
     ptnew->ctxswintime = clkmsec; /* Set the swap-in time for the new process */
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
-
+    
 	/* Old process returns here when resumed */
 
+    /* If there is message waiting and a callback fn was registered, 
+     * then let the callback know. */
+    if (ptold->prhasmsg == TRUE && ptold->recvcb != NULL) {
+        (ptold->recvcb)(NULL);
+        ptold->prhasmsg = FALSE;
+    }
 	return;
 }
 

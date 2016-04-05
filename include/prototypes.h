@@ -134,6 +134,9 @@ extern	char	*getmem(uint32);
 /* in file getpid.c */
 extern	pid32	getpid(void);
 
+/* in file registercb.c */
+extern	syscall registercb(int (*)(void *));
+
 /* in file getppid.c */
 extern	pid32	getppid(void);
 

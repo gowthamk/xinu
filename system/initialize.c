@@ -143,7 +143,9 @@ static	void	sysinit()
         tsdtab[i].ts_slpret = ts_min_slpret + class_id;
     }
     /* print the table */
+    kprintf("---------------------------------------------------------\n");
     kprintf("ts_quantum\tts_tqexp\tts_slpret\tPRIORITY\n");
+    kprintf("---------------------------------------------------------\n");
     struct ts_disptb entry;
     for(i=0;i<=TS_MAX_PRIO;i++) {
         entry = tsdtab[i];

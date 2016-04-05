@@ -2,34 +2,10 @@
 
 #include <xinu.h>
 #include <stdio.h>
-extern void sender(pid32,int);
-extern void receiver(void);
-extern void lab3q3t1(void);
-extern void lab3q3t2(void);
-extern void lab3q3t3(void);
-extern void lab3q3t4(void);
-extern void lab3q4t1(void);
-extern void lab3q4t2(void);
-extern void lab3q4t3(void);
-extern void lab3q4t4(void);
-extern void test_gpqueue(struct gpqueue*);
+extern void lab4q2t1(void);
+extern void lab4q2t2(void);
 process	main(void)
 {
-    /*struct gpqueue* gpq = (struct gpqueue*)getstk(sizeof(struct gpqueue));
-    gpq->size = gpq->head = gpq->tail = 0;
-    test_gpqueue(gpq);*/
-    /*
-    kprintf("Main creating a receiver and three senders...\n");
-    pid32 receiver_pid = create(receiver, 1024, 20, "receiver", 0);
-    sleepms(100);
-    resume(create(sender, 1024, 20, "sender1", 2, receiver_pid, 0));
-    sleepms(100);
-    resume(create(sender, 1024, 20, "sender2", 2, receiver_pid, 100));
-    sleepms(100);
-    resume(create(sender, 1024, 20, "sender3", 2, receiver_pid, 0));
-    resume(receiver_pid);
-    sleep(8);
-    */
     /*
     kprintf("*** Main running lab3q3t1 testcase\n");
     lab3q3t1();
@@ -39,11 +15,16 @@ process	main(void)
     lab3q3t3();
     kprintf("*** Main running lab3q3t4 testcase\n");
     lab3q3t4();
-    */
+
     lab3q4t1();
     lab3q4t2();
     lab3q4t3();
     lab3q4t4();
+    */
+
+    lab4q2t1();
+    lab4q2t2();
+    sleep(4);
 	while (TRUE) {
 		receive();
 		sleepms(200);

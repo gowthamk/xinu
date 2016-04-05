@@ -49,6 +49,7 @@ pid32	create(
     prptr->begunat = clkmsec; /* Setting the creation timestamp */
 	prptr->prstkbase = (char *)saddr;
 	prptr->prstklen = ssize;
+    prptr->recvcb = NULL;
 	prptr->prname[PNMLEN-1] = NULLCH;
 	for (i=0 ; i<PNMLEN-1 && (prptr->prname[i]=name[i])!=NULLCH; i++)
 		;

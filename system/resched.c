@@ -91,9 +91,14 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
     /* If there is message waiting and a callback fn was registered, 
      * then let the callback know. */
-    if (ptold->prhasmsg == TRUE && ptold->recvcb != NULL) {
-        (ptold->recvcb)(NULL);
-        ptold->prhasmsg = FALSE;
+    if (ptold->prhasmsg == TRUE) {
+        if (ptold->recvcb != NULL) {
+            (ptold->recvcb)(NULL);
+            ptold->prhasmsg = FALSE;
+        } else if (ptold->sighandlers[sigToIndex(MYSIGRECV)] != NULL) {
+            (ptold->sighandlers[sigToIndex(MYSIGRECV)])(NULL);
+            ptold->prhasmsg = FALSE;
+        }
     }
 	return;
 }

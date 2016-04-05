@@ -50,6 +50,9 @@ pid32	create(
 	prptr->prstkbase = (char *)saddr;
 	prptr->prstklen = ssize;
     prptr->recvcb = NULL;
+    for(i=0; i<NMYSIGNALS; i++) {
+        prptr->sighandlers[i] = NULL;
+    }
 	prptr->prname[PNMLEN-1] = NULLCH;
 	for (i=0 ; i<PNMLEN-1 && (prptr->prname[i]=name[i])!=NULLCH; i++)
 		;

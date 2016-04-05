@@ -63,7 +63,8 @@ struct procent {		/* Entry in the process table		*/
     struct gpqueue *senderwaitq;    /* A queue of procs waiting to send 
                                        a msg to this proc.*/
     uint32  begunat; /* creation timestamp (msecs) */
-    int (* recvcb)(void *);
+    int (* recvcb)(void *); /* Receive signal handler. Lab4Q2. */
+    int (* sighandlers[NMYSIGNALS])(void*); /* Various signal handlers. Lab4Q3. */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

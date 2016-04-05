@@ -1,4 +1,3 @@
-/*
 #include <xinu.h>
 int sent = 0;
 void sender(pid32 recvpid) {
@@ -10,7 +9,7 @@ void sender(pid32 recvpid) {
     } else if (status == TIMEOUT) {
         kprintf("[Pid %d @ t=%d] Send timed out!\n",currpid,clkmsec);
     } else {
-        kprintf("[Pid %d @ t=%d] Message sent succesfully.\n",currpid,clkmsec);
+        kprintf("[Pid %d @ t=%d] Send succeeeded.\n",currpid,clkmsec);
     }
     return;
 }
@@ -25,7 +24,7 @@ void receiver(int numSenders) {
     int i;
     kprintf("[Pid %d @ t=%d] Receive process. Registering a callback.\n"
                 , currpid, clkmsec);
-    registercb(&recvcb);
+    registercbsig(MYSIGRECV,&recvcb,0);
     while(TRUE) {
         for(i=0; i<99999999; i++);
         kprintf("[Pid %d @ t=%d] Receiver Running.\n", currpid, clkmsec);
@@ -36,23 +35,23 @@ void receiver(int numSenders) {
     }
     return;
 }
-void lab4q2t1(void) {
+void lab4q3t1(void) {
     sent=0;
     kprintf("---------------------------------------------------------------\n");
-    kprintf("LAB4Q2T1: 1 sender and 1 receiver\n");
+    kprintf("LAB4Q3T1: 1 sender and 1 receiver\n");
     kprintf("---------------------------------------------------------------\n");
     pid32 receiver_pid = create(receiver, 1024, 20, "receiver", 1, 1);
     resume(receiver_pid);
     sleep(2);
     resume(create(sender, 1024, 20, "sender", 1, receiver_pid));
     sleep(2);
-    kprintf("LAB4Q2T1: Ending\n");
+    kprintf("LAB4Q3T1: Ending\n");
     return;
 }
-void lab4q2t2(void) {
+void lab4q3t2(void) {
     sent=0;
     kprintf("---------------------------------------------------------------\n");
-    kprintf("LAB4Q2T2: 2 concurrent senders and 1 receiver\n");
+    kprintf("LAB4Q3T2: 2 concurrent senders and 1 receiver\n");
     kprintf("---------------------------------------------------------------\n");
     pid32 receiver_pid = create(receiver, 1024, 20, "receiver", 1, 2);
     resume(receiver_pid);
@@ -61,7 +60,6 @@ void lab4q2t2(void) {
     sleep(2);
     resume(create(sender, 1024, 20, "sender2", 1, receiver_pid));
     sleep(2);
-    kprintf("LAB4Q2T2: Ending\n");
+    kprintf("LAB4Q3T2: Ending\n");
     return;
 }
-*/

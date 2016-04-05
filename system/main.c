@@ -4,6 +4,8 @@
 #include <stdio.h>
 extern void lab4q2t1(void);
 extern void lab4q2t2(void);
+extern void lab4q3t1(void);
+extern void lab4q3t2(void);
 process	main(void)
 {
     /*
@@ -22,8 +24,8 @@ process	main(void)
     lab3q4t4();
     */
 
-    lab4q2t1();
-    lab4q2t2();
+    lab4q3t1();
+    lab4q3t2();
     sleep(4);
 	while (TRUE) {
 		receive();

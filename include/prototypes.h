@@ -137,6 +137,9 @@ extern	pid32	getpid(void);
 /* in file registercb.c */
 extern	syscall registercb(int (*)(void *));
 
+/* in file registercbsig.c */
+extern	syscall registercbsig(uint16, int (*)(void *), uint32);
+
 /* in file getppid.c */
 extern	pid32	getppid(void);
 

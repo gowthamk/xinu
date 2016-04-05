@@ -2,6 +2,7 @@
 
 #include <kernel.h>
 #include <conf.h>
+#include <mysignal.h> /* Lab4Q3. Signal extension */
 #include <process.h>
 #include <queue.h>
 #include <resched.h>

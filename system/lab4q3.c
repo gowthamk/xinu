@@ -63,3 +63,26 @@ void lab4q3t2(void) {
     kprintf("LAB4Q3T2: Ending\n");
     return;
 }
+int sigxcpucb(void *ptr) {
+    kprintf("[Pid %d @ t=%d] MYSIGXCPU callback has been called.\n", currpid, clkmsec);
+    return OK;
+}
+void sigxcpufn(void) {
+    int i;
+    kprintf("[Pid %d @ t=%d] Registering a MYSIGXCPU callback.\n"
+                , currpid, clkmsec);
+    registercbsig(MYSIGXCPU,&sigxcpucb,0);
+    kprintf("[Pid %d @ t=%d] Running.\n", currpid, clkmsec);
+    for(i=0; i<99999999; i++);
+    kprintf("[Pid %d @ t=%d] Exiting.\n", currpid, clkmsec);
+    return;
+}
+void lab4q3t3(void) {
+    sent=0;
+    kprintf("---------------------------------------------------------------\n");
+    kprintf("LAB4Q3T3: 1 long process with MYSIGXCPU hander defined. \n");
+    kprintf("---------------------------------------------------------------\n");
+    resume(create(sigxcpufn, 1024, 20, "sigxcpuprocess", 0));
+    sleep(2);
+    return;
+}

@@ -65,6 +65,7 @@ struct procent {		/* Entry in the process table		*/
     uint32  begunat; /* creation timestamp (msecs) */
     int (* recvcb)(void *); /* Receive signal handler. Lab4Q2. */
     int (* sighandlers[NMYSIGNALS])(void*); /* Various signal handlers. Lab4Q3. */
+    bool8   prdidtime;  /* True if MYSIGXCPU signal has been handled. Lab4Q3.*/
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

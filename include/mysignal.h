@@ -11,3 +11,5 @@
 
 #define isValidSig(x) (x>=5 && x<=7)
 #define sigToIndex(x) (x-5)
+
+#define MYSIGXCPUTIME 750

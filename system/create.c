@@ -50,9 +50,10 @@ pid32	create(
 	prptr->prstkbase = (char *)saddr;
 	prptr->prstklen = ssize;
     prptr->recvcb = NULL;
-    for(i=0; i<NMYSIGNALS; i++) {
+    for(i=0; i<NMYSIGNALS; i++) { /* Set all signal handlers to NULL. */
         prptr->sighandlers[i] = NULL;
     }
+    prptr->prdidtime = FALSE; /* Process still hasn't exceeded MYSIGXCPUTIME */
 	prptr->prname[PNMLEN-1] = NULLCH;
 	for (i=0 ; i<PNMLEN-1 && (prptr->prname[i]=name[i])!=NULLCH; i++)
 		;

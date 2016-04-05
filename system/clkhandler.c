@@ -23,6 +23,14 @@ void	clkhandler()
 		count1000 = 1000;
 	}
     clkmsec++;
+    /* Incrementing prcpumsec of the current process */
+    struct procent* p = &proctab[currpid];
+    p->cpumsec++;
+    if (p->sighandlers[sigToIndex(MYSIGXCPU)] != NULL && 
+                    !p->prdidtime && p->cpumsec >= MYSIGXCPUTIME) {
+        p->prdidtime=TRUE;
+        (p->sighandlers[sigToIndex(MYSIGXCPU)])(NULL);
+    }
 
 	/* Handle sleeping processes if any exist */
 

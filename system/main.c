@@ -6,6 +6,7 @@ extern void lab4q2t1(void);
 extern void lab4q2t2(void);
 extern void lab4q3t1(void);
 extern void lab4q3t2(void);
+extern void lab4q3t3(void);
 process	main(void)
 {
     /*
@@ -26,6 +27,7 @@ process	main(void)
 
     lab4q3t1();
     lab4q3t2();
+    lab4q3t3();
     sleep(4);
 	while (TRUE) {
 		receive();

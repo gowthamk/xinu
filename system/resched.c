@@ -55,7 +55,8 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptold = &proctab[currpid];
 
     /* Update time counters for the old process */
-    ptold->cpumsec += clkmsec - ptold->ctxswintime;
+    // LAB4Q3: cpumsec is now being handled in clkhandler.
+    // ptold->cpumsec += clkmsec - ptold->ctxswintime;
     ptold->ctxswintime = clkmsec;
 
     /* Update TS metrics for the current process */

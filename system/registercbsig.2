@@ -1,0 +1,33 @@
+.TH registercbsig 1 "05 April 2016" "version 1.0"
+.SH NAME
+registercbsig - register a callback function as a signal handler
+.SH SYNOPSIS
+.B int32 registercbsig(sigid, callback_fn, optarg)
+
+.B uint16 sigid
+
+.B int (* callback_fn)(void *)
+
+.B uint32 optarg
+
+.SH DESCRIPTION
+This function is an interface to signal handling subsystem of XINU. The signal
+handling subsystem resembles that of UNIX/Linux where processes register signal
+handlers (i.e., callback functions) that are invoked by the kernel when a
+specific event (e.g., alarm, message arrival) occurs. 
+
+.PP
+The first argument
+.B sigid
+is the signal identifier. It is 
+MYSIGRECV for message receive signal, MYSIGXCPU for cpu time limit expiration
+signal (the current value is 750ms), and MYSIGALRM for alarm signal. Callback
+function will be called when the process is scheduled for execution after the
+appropriate signal occurs. If the process is sleeping, the MYSIGALRM signal will
+unsleep the process, and makes it ready before executing the signal handler. The
+third argument
+.I optarg
+to 
+.I registercbsig
+exists for technical reasons, and can be ignored.
+

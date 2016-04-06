@@ -39,6 +39,11 @@ void	clkhandler()
         p->alarmms--;
         if (p->alarmms <= 0) {
             alarmq = dequeuedq(alarmq);
+            /* If the process is sleeping, and make it ready.*/
+            if(p->prstate == PR_SLEEP) {
+                unsleep(p->pid);
+                ready(p->pid);
+            }
         }
     }
 

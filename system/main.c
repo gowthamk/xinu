@@ -4,10 +4,12 @@
 #include <stdio.h>
 extern void lab4q2t1(void);
 extern void lab4q2t2(void);
+extern void lab4q2t3(void);
 extern void lab4q3t1(void);
 extern void lab4q3t2(void);
 extern void lab4q3t3(void);
 extern void lab4q3t4(void);
+extern void lab4q3t5(void);
 extern void test_deltaqueue(void);
 process	main(void)
 {
@@ -27,14 +29,17 @@ process	main(void)
     lab3q4t4();
     */
 
+    lab4q2t1();
+    lab4q2t2();
+    lab4q2t3();
     /*
     lab4q3t1();
     lab4q3t2();
-    lab4q3t3();
     sleep(4);
     */
-    // test_deltaqueue();
+    lab4q3t3();
     lab4q3t4();
+    lab4q3t5();
     sleep(1);
 	while (TRUE) {
 		receive();
